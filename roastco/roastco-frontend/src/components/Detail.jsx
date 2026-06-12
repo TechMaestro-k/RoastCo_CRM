@@ -24,7 +24,7 @@ export default function Detail({ id, onBack }) {
         })
         .catch(() => {})
     poll()
-    const t = setInterval(poll, 3000)
+    const t = setInterval(poll, 6000)
     return () => {
       live = false
       clearInterval(t)

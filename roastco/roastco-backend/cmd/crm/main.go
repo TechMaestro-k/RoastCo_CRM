@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/roastco/backend/internal/ai"
 	"github.com/roastco/backend/internal/api"
@@ -45,5 +46,13 @@ func main() {
 		port = "8080"
 	}
 	log.Printf("crm listening on :%s", port)
-	log.Fatal(http.ListenAndServe(":"+port, srv.Router()))
+	server := &http.Server{
+		Addr:              ":" + port,
+		Handler:           srv.Router(),
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       60 * time.Second,
+	}
+	log.Fatal(server.ListenAndServe())
 }

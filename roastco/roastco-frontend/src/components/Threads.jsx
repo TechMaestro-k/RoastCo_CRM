@@ -14,7 +14,7 @@ export default function Threads({ campaignId }) {
     let live = true
     const load = () => api.recipients(campaignId).then((r) => live && setRecips(r || [])).catch(() => {})
     load()
-    const t = setInterval(load, 4000)
+    const t = setInterval(load, 8000)
     return () => { live = false; clearInterval(t) }
   }, [campaignId])
 
@@ -24,7 +24,7 @@ export default function Threads({ campaignId }) {
     let live = true
     const load = () => api.comm(selId).then((c) => live && setComm(c)).catch(() => {})
     load()
-    const t = setInterval(load, 2000)
+    const t = setInterval(load, 4000)
     return () => { live = false; clearInterval(t) }
   }, [selId])
 
