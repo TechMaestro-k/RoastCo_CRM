@@ -1,0 +1,14 @@
+# Supabase's free tier pauses projects after ~7 days without activity.
+# This pings the CRM's /healthz (which pings the database) twice a week,
+# keeping the demo alive for evaluators. Set CRM_URL in repo secrets.
+name: keep-alive
+on:
+  schedule:
+    - cron: "0 6 * * 1,4" # Mon & Thu 06:00 UTC
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping CRM health (pings DB)
+        run: curl -fsS "${{ secrets.CRM_URL }}/healthz"
