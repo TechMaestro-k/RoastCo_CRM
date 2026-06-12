@@ -115,7 +115,13 @@ func (d *Dispatcher) sendOne(ctx context.Context, c store.ClaimedComm) {
 		Message:         msg,
 		CallbackURL:     d.callbackURL,
 	})
-	req, _ := http.NewRequestWithContext(ctx, "POST", d.channelURL+"/send", bytes.NewReader(body))
+	req, err := http.NewRequestWithContext(ctx, "POST", d.channelURL+"/send", bytes.NewReader(body))
+	if err != nil {
+		// Misconfigured CHANNEL_URL (unparseable). Permanent for this config:
+		// log loudly; rows stay queued and recover as soon as config is fixed.
+		log.Printf("dispatch: BAD CHANNEL_URL %q: %v", d.channelURL, err)
+		return
+	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set(wire.SecretHeader, d.secret)
 
@@ -208,7 +214,9 @@ func newEventID(prefix string) string {
 }
 
 func envStr(k, def string) string {
-	if v := os.Getenv(k); v != "" {
+	// Trim: env values pasted into deploy dashboards often carry stray
+	// whitespace, and a leading space makes a URL unparseable.
+	if v := strings.TrimSpace(os.Getenv(k)); v != "" {
 		return v
 	}
 	return def
