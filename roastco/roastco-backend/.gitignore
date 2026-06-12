@@ -1,6 +1,7 @@
 bin/
 *.log
 .env
-crm
-channel
-seed
+/crm
+/channel
+/seed
+*.exe
