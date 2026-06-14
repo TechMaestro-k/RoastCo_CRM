@@ -5,7 +5,8 @@
 Built for the **Xeno Engineering Internship Assignment 2026**.
 
 **Live demo:** https://roast-co-crm.vercel.app
-**Walkthrough video:** _\<add link after recording\>_
+
+**Walkthrough video:**(https://drive.google.com/file/d/18l6MlCbeF8zskpajv06Efcczu8A6ga7_/view?usp=sharing)
 
 ---
 
